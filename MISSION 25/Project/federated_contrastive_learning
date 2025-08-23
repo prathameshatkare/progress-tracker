@@ -1,0 +1,45 @@
+// Federated Contrastive Learning
+digraph {
+	subgraph cluster_pretrain {
+		color=lightblue label="Pre Training Stage"
+		start_pre [label="Start federated pre training" shape=oval]
+		server [label=Server shape=rectangle]
+		client [label="Device client" shape=rectangle]
+		encode [label="Encode local data" shape=rectangle]
+		upload [label="Upload features and model" shape=parallelogram]
+		aggregate [label="Aggregate models and features" shape=rectangle]
+		distribute [label="Distribute aggregated model
+and remote features" shape=parallelogram]
+		contrastive [label="Contrastive local learning" shape=rectangle]
+		update [label="Update models" shape=rectangle]
+		store [label="Store local features" shape=rectangle]
+		end_pre [label="End federated pre training" shape=oval]
+	}
+	subgraph cluster_finetune {
+		color=lightgreen label="Fine Tuning Stage"
+		start_ft [label="Start fine tuning" shape=oval]
+		pretrained [label="Pre trained model" shape=rectangle]
+		tuning [label="Tuning method" shape=diamond]
+		local_ft [label="Local fine tuning" shape=rectangle]
+		fed_ft [label="Federated fine tuning" shape=rectangle]
+		end_ft [label="End fine tuning" shape=oval]
+	}
+	start_pre -> server
+	server -> client
+	client -> encode
+	encode -> upload
+	upload -> aggregate
+	aggregate -> distribute
+	client -> contrastive
+	contrastive -> update
+	update -> store
+	store -> upload
+	aggregate -> end_pre
+	end_pre -> start_ft
+	start_ft -> pretrained
+	pretrained -> tuning
+	tuning -> local_ft
+	tuning -> fed_ft
+	local_ft -> end_ft
+	fed_ft -> end_ft
+}

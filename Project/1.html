@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReportNow</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚨</text></svg>">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(to bottom, #111827, #030712);
+            color: white;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 64px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2.5rem;
+            z-index: 50;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo .accent {
+            color: #ef4444;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.25rem;
+        }
+
+        .social-links a {
+            color: #9ca3af;
+            transition: color 0.2s;
+        }
+
+        .social-links a:hover {
+            color: #d1d5db;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 12rem;
+            padding-bottom: 5rem;
+            padding-left: 4rem;
+            padding-right: 4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 7rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            background: rgba(239, 68, 68, 0.1);
+            font-size: 0.875rem;
+            margin-bottom: 1.75rem;
+            transition: background 0.2s;
+        }
+
+        .badge:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .badge svg {
+            color: #dc2626;
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            margin-bottom: 1.25rem;
+            line-height: 1.1;
+        }
+
+        .hero-gradient {
+            display: block;
+            margin-top: 1.25rem;
+            background: linear-gradient(to bottom, #f87171, #dc2626);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            color: #9ca3af;
+            max-width: 700px;
+            margin: 0 auto 1.75rem;
+            font-size: 1rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.25rem;
+            justify-content: center;
+            margin-top: 1.75rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #4b5563;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #374151;
+            transform: translateX(4px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid #4b5563;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Screenshot */
+        .screenshot {
+            background: rgba(107, 114, 128, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 0.5rem;
+            margin-bottom: 8rem;
+        }
+
+        .screenshot img {
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 1000px;
+            height: auto;
+        }
+
+        /* Features Section */
+        .features {
+            width: 100%;
+            padding: 8rem 0;
+            text-align: center;
+        }
+
+        .features-title {
+            font-size: 5rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            background: linear-gradient(to bottom, #f87171, #dc2626);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 3.5rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.75rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: rgba(107, 114, 128, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: left;
+        }
+
+        .feature-icon {
+            background: rgba(156, 163, 175, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            width: fit-content;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-icon svg {
+            color: #9ca3af;
+            width: 20px;
+            height: 20px;
+        }
+
+        .feature-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            color: #9ca3af;
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+
+        /* FAQ Section */
+        .faq {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 4rem 0 6rem;
+        }
+
+        .faq-title {
+            font-size: 5rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            background: linear-gradient(to bottom, #f87171, #dc2626);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .faq-item {
+            background: rgba(107, 114, 128, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 1rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .faq-question:hover {
+            background: rgba(55, 65, 81, 0.2);
+        }
+
+        .faq-answer {
+            padding: 0 1rem 1rem;
+            color: #9ca3af;
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .faq-answer.active {
+            display: block;
+        }
+
+        /* CTA Section */
+        .cta {
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+
+        .cta-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            background: linear-gradient(to bottom, #f87171, #dc2626);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .cta-description {
+            color: #9ca3af;
+            font-size: 1.125rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .cta-button {
+            background: #4b5563;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .cta-button:hover {
+            background: #374151;
+        }
+
+        /* Footer */
+        .footer {
+            width: 100%;
+            padding: 2.5rem 5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 5rem;
+        }
+
+        .footer-section h4 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+
+        .footer-section a:hover {
+            color: #d1d5db;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 1rem;
+            }
+
+            .nav-links,
+            .social-links {
+                display: none;
+            }
+
+            .main-content {
+                padding-left: 1.75rem;
+                padding-right: 1.75rem;
+                padding-top: 5rem;
+            }
+
+            .hero-title {
+                font-size: 2.9rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.7rem;
+            }
+
+            .features-title,
+            .faq-title {
+                font-size: 2.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+
+            .footer {
+                padding: 1.5rem;
+                flex-direction: column;
+                gap: 1.25rem;
+            }
+
+            .footer-links {
+                gap: 2.75rem;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div>
+            <a href="#" class="logo">Report<span class="accent">Now</span></a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" class="active">Home</a></li>
+            <li><a href="#submit">Submit Report</a></li>
+            <li><a href="#track">Track Report</a></li>
+            <li><a href="#support">Nearby Support</a></li>
+            <li><a href="#how">How it works</a></li>
+        </ul>
+        <div class="social-links">
+            <a href="#" target="_blank">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+            </a>
+            <a href="#" target="_blank">
+                <svg width="25" height="25" viewBox="0 0 512 512" fill="currentColor">
+                    <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"></path>
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="badge">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+                </svg>
+                24/7 Emergency Response System
+            </div>
+            <h1 class="hero-title">
+                Instant & Anonymous
+                <span class="hero-gradient">Incident Reporting</span>
+            </h1>
+            <p class="hero-description">
+                Report emergencies instantly & securely. With ReportNow, your safety is our priority-ensuring immediate response coordination and complete anonymity when needed.
+            </p>
+            <div class="hero-buttons">
+                <a href="#submit" class="btn btn-primary" id="reportBtn">
+                    Make anonymous report
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 7h10v10"></path>
+                        <path d="M7 17 17 7"></path>
+                    </svg>
+                </a>
+                <a href="#how" class="btn btn-secondary">How it works?</a>
+            </div>
+        </div>
+
+        <!-- Screenshot -->
+        <div class="screenshot">
+            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 600'><rect width='1000' height='600' fill='%23111827'/><text x='500' y='300' font-size='48' text-anchor='middle' fill='%23ffffff'>Report Submission Interface</text></svg>" alt="Report submission interface" />
+        </div>
+
+        <!-- Features Section -->
+        <div class="features">
+            <h2 class="features-title">Core Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 16 16" fill="currentColor">
+                            <path fill-rule="evenodd" d="m4.736 1.968-.892 3.269-.014.058C2.113 5.568 1 6.006 1 6.5 1 7.328 4.134 8 8 8s7-.672 7-1.5c0-.494-1.113-.932-2.83-1.205l-.014-.058-.892-3.27c-.146-.533-.698-.849-1.239-.734C9.411 1.363 8.62 1.5 8 1.5s-1.411-.136-2.025-.267c-.541-.115-1.093.2-1.239.735"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Anonymous Reporting</h3>
+                    <p class="feature-description">Report incidents without revealing your identity. Your privacy is safeguarded through our advanced anonymous reporting system.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M4 11h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zm10 0h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zM4 21h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zm13 0c2.206 0 4-1.794 4-4s-1.794-4-4-4-4 1.794-4 4 1.794 4 4 4z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Incident Categorization</h3>
+                    <p class="feature-description">Quickly classify reports as emergency or non-emergency with specific incident types like Theft, Fire, or Medical Emergency.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="10" cy="9" r="4"></circle>
+                            <path d="M16.39 15.56C14.71 14.7 12.53 14 10 14s-4.71.7-6.39 1.56A2.97 2.97 0 0 0 2 18.22V21h16v-2.78c0-1.12-.61-2.15-1.61-2.66z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Report Tracking</h3>
+                    <p class="feature-description">Receive a unique report ID and track the status of your report in real-time for complete transparency.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Emergency Nearby Support</h3>
+                    <p class="feature-description">Get instant recommendations for nearby police stations, hospitals, or helplines based on your location.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Basic Notifications</h3>
+                    <p class="feature-description">Opt-in to receive email notifications for updates regarding your report status and responses from authorities.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="12" cy="12" r="3.2"></circle>
+                            <path d="M9 2 7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Quick Report Mode</h3>
+                    <p class="feature-description">Just upload an image, and the system will automatically fill in the report details using AI-powered analysis, making reporting faster and effortless.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq">
+            <h2 class="faq-title">FAQs</h2>
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    Is my identity protected when I submit a report?
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    Yes, absolutely. Your identity is completely protected through our advanced encryption and anonymous reporting system. No personal information is stored or shared with authorities unless you explicitly choose to provide it.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    What types of incidents can I report?
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    You can report various types of incidents including theft, fire, medical emergencies, suspicious activities, safety hazards, domestic violence, cybercrime, and other public safety concerns. Both emergency and non-emergency incidents are accepted.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    How do I track my report status?
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    After submitting your report, you'll receive a unique report ID. Use this ID in our "Track Report" section to check real-time status updates, view responses from authorities, and monitor the progress of your case.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    Can I communicate anonymously with authorities after reporting?
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    Yes, our platform enables anonymous two-way communication. You can provide additional information or respond to authority requests while maintaining complete anonymity through our secure messaging system.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    Will I receive notifications about my report?
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    You can opt-in to receive email notifications about status updates, responses from authorities, and important developments regarding your report. All notifications are sent securely without revealing your identity.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    Is the platform available in multiple languages?
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    Currently, ReportNow is available in English. We're working on adding support for multiple regional languages to make the platform accessible to a broader community. Stay tuned for updates!
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="cta">
+            <h3 class="cta-title">READY TO REPORT</h3>
+            <p class="cta-description">Take action now and report an incident securely and anonymously.</p>
+            <button class="cta-button" onclick="reportNow()">Report Now</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-brand">
+            <a href="#" class="logo">Report<span class="accent">Now</span></a>
+            <p class="footer-copyright">© 2025 ReportNow Private Limited.</p>
+            <p class="footer-copyright">All rights reserved.</p>
+        </div>
+        <div class="footer-links">
+            <div class="footer-section">
+                <h4>PAGES</h4>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#submit">Submit Report</a></li>
+                    <li><a href="#track">Track Report</a></li>
+                    <li><a href="#support">Nearby Support</a></li>
+                    <li><a href="#how">How it works</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>LEGAL</h4>
+                <ul>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms and Conditions</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>CONNECT</h4>
+                <ul>
+                    <li><a href="#" target="_blank">Github</a></li>
+                    <li><a href="#" target="_blank">LinkedIn</a></li>
+                    <li><a href="#" target="_blank">Twitter</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Toggle Functionality
+        function toggleFAQ(button) {
+            const answer = button.nextElementSibling;
+            const icon = button.querySelector('svg');
+            
+            // Close all other FAQs
+            const allAnswers = document.querySelectorAll('.faq-answer');
+            const allIcons = document.querySelectorAll('.faq-question svg');
+            
+            allAnswers.forEach(ans => {
+                if (ans !== answer) {
+                    ans.classList.remove('active');
+                }
+            });
+            
+            allIcons.forEach(ic => {
+                if (ic !== icon) {
+                    ic.style.transform = 'rotate(0deg)';
+                }
+            });
+            
+            // Toggle current FAQ
+            answer.classList.toggle('active');
+            
+            if (answer.classList.contains('active')) {
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Report Now Button Functionality
+        function reportNow() {
+            // Create modal for report submission
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            `;
+            
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: #111827;
+                padding: 2rem;
+                border-radius: 1rem;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                max-width: 500px;
+                width: 90%;
+                position: relative;
+            `;
+            
+            modalContent.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2 style="color: white; margin: 0; font-size: 1.5rem;">Submit Incident Report</h2>
+                    <button onclick="closeModal()" style="background: none; border: none; color: #9ca3af; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                </div>
+                
+                <form id="reportForm" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div>
+                        <label style="color: #d1d5db; font-size: 0.875rem; margin-bottom: 0.5rem; display: block;">Incident Type</label>
+                        <select style="width: 100%; padding: 0.75rem; background: #374151; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.5rem; color: white;">
+                            <option value="">Select incident type</option>
+                            <option value="emergency">🚨 Emergency</option>
+                            <option value="theft">🔓 Theft</option>
+                            <option value="fire">🔥 Fire</option>
+                            <option value="medical">🏥 Medical Emergency</option>
+                            <option value="accident">🚗 Accident</option>
+                            <option value="suspicious">👀 Suspicious Activity</option>
+                            <option value="other">📝 Other</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label style="color: #d1d5db; font-size: 0.875rem; margin-bottom: 0.5rem; display: block;">Location</label>
+                        <input type="text" placeholder="Enter incident location" style="width: 100%; padding: 0.75rem; background: #374151; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.5rem; color: white;">
+                    </div>
+                    
+                    <div>
+                        <label style="color: #d1d5db; font-size: 0.875rem; margin-bottom: 0.5rem; display: block;">Description</label>
+                        <textarea placeholder="Describe the incident in detail..." rows="4" style="width: 100%; padding: 0.75rem; background: #374151; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.5rem; color: white; resize: vertical;"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label style="color: #d1d5db; font-size: 0.875rem; margin-bottom: 0.5rem; display: block;">Upload Evidence (Optional)</label>
+                        <input type="file" accept="image/*" style="width: 100%; padding: 0.75rem; background: #374151; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.5rem; color: white;">
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0;">
+                        <input type="checkbox" id="anonymous" checked style="accent-color: #ef4444;">
+                        <label for="anonymous" style="color: #d1d5db; font-size: 0.875rem;">Submit anonymously</label>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <button type="button" onclick="closeModal()" style="flex: 1; padding: 0.75rem; background: #6b7280; border: none; border-radius: 0.5rem; color: white; cursor: pointer; transition: background 0.2s;">Cancel</button>
+                        <button type="submit" style="flex: 1; padding: 0.75rem; background: #ef4444; border: none; border-radius: 0.5rem; color: white; cursor: pointer; transition: background 0.2s;">Submit Report</button>
+                    </div>
+                </form>
+            `;
+            
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+            
+            // Handle form submission
+            document.getElementById('reportForm').onsubmit = function(e) {
+                e.preventDefault();
+                
+                // Generate random report ID
+                const reportId = 'RPT-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+                
+                // Show success message
+                modalContent.innerHTML = `
+                    <div style="text-align: center; padding: 2rem 0;">
+                        <div style="color: #10b981; font-size: 3rem; margin-bottom: 1rem;">✓</div>
+                        <h2 style="color: white; margin-bottom: 1rem;">Report Submitted Successfully!</h2>
+                        <p style="color: #9ca3af; margin-bottom: 1.5rem;">Your incident has been reported and will be reviewed by the appropriate authorities.</p>
+                        <div style="background: #374151; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">
+                            <p style="color: #d1d5db; margin-bottom: 0.5rem; font-size: 0.875rem;">Your Report ID:</p>
+                            <p style="color: white; font-family: monospace; font-size: 1.25rem; font-weight: bold;">${reportId}</p>
+                        </div>
+                        <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 1.5rem;">Save this ID to track your report status. You will also receive email updates if you provided your email address.</p>
+                        <button onclick="closeModal()" style="padding: 0.75rem 2rem; background: #ef4444; border: none; border-radius: 0.5rem; color: white; cursor: pointer;">Close</button>
+                    </div>
+                `;
+            };
+            
+            // Close modal when clicking outside
+            modal.onclick = function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            };
+        }
+
+        // Close modal function
+        function closeModal() {
+            const modal = document.querySelector('div[style*="position: fixed"]');
+            if (modal) {
+                document.body.removeChild(modal);
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Report button click handler
+        document.getElementById('reportBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            reportNow();
+        });
+
+        // Add floating action button for quick access
+        const fab = document.createElement('div');
+        fab.style.cssText = `
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: #ef4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            transition: all 0.3s;
+        `;
+        
+        fab.innerHTML = `
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2">
+                <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+            </svg>
+        `;
+        
+        fab.addEventListener('click', reportNow);
+        fab.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.1)';
+        });
+        fab.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+        
+        document.body.appendChild(fab);
+
+        // Add typing effect to hero title
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Initialize typing effect on page load
+        window.addEventListener('load', function() {
+            const heroTitle = document.querySelector('.hero-title');
+            const originalText = heroTitle.innerHTML;
+            typeWriter(heroTitle, 'Instant & Anonymous Incident Reporting', 80);
+        });
+
+        // Add intersection observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Apply fade-in animation to feature cards
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

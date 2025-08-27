@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Website</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      background-color: #fdfaf6;
+    }
+
+    /* Header & Navbar */
+    header {
+      background: #8b0000;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header img {
+      display: block;
+      margin: 0 auto;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin: 10px 0 0;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #ffd700;
+    }
+
+    /* Main content */
+    main {
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #8b0000;
+      margin-top: 40px;
+      margin-bottom: 15px;
+    }
+
+    h3 {
+      margin-top: 25px;
+      color: #444;
+    }
+
+    /* Menu grid */
+    .menu-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    .menu-item {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .menu-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .menu-item img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .menu-item p {
+      margin: 10px 0 0;
+      font-weight: bold;
+      color: #333;
+    }
+
+    /* Footer */
+    footer {
+      background: #333;
+      color: white;
+      text-align: center;
+      padding: 25px;
+      margin-top: 40px;
+    }
+
+    footer h2 {
+      margin-bottom: 10px;
+      color: #ffd700;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="images/logo.webp" alt="logo" width="100" height="100">
+    <h1>Delicious Dishes Restaurant</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Menu</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Welcome to Delicious Dishes</h2>
+    <p>Experience the best dining experience with our exquisite dishes and exceptional service.</p>
+
+    <h2>About Us</h2>
+    <p>Delicious Dishes Restaurant has been serving mouth-watering meals since 1990. We pride ourselves on using the freshest ingredients and providing top-notch customer service.</p>
+
+    <h2>Our Menu</h2>
+
+    <h3>Appetizers</h3>
+    <div class="menu-section">
+      <div class="menu-item">
+        <img src="images/Bruschetta.jpeg" alt="Bruschetta">
+        <p>Bruschetta - $8</p>
+      </div>
+      <div class="menu-item">
+        <img src="images/mushroom.jpeg" alt="Stuffed Mushrooms">
+        <p>Stuffed Mushrooms - $10</p>
+      </div>
+      <div class="menu-item">
+        <img src="images/bread.webp" alt="Garlic Bread">
+        <p>Garlic Bread - $5</p>
+      </div>
+    </div>
+
+    <h3>Main Courses</h3>
+    <div class="menu-section">
+      <div class="menu-item">
+        <img src="images/salmon.jpeg" alt="Grilled Salmon">
+        <p>Grilled Salmon - $20</p>
+      </div>
+      <div class="menu-item">
+        <img src="images/ribeya Steak.jpeg" alt="Ribeye Steak">
+        <p>Ribeye Steak - $25</p>
+      </div>
+      <div class="menu-item">
+        <img src="images/chicken.webp" alt="Chicken Alfredo">
+        <p>Chicken Alfredo - $18</p>
+      </div>
+    </div>
+
+    <h3>Desserts</h3>
+    <div class="menu-section">
+      <div class="menu-item">
+        <img src="images/cheese cake.webp" alt="Cheesecake">
+        <p>Cheesecake - $7</p>
+      </div>
+      <div class="menu-item">
+        <img src="images/tiramisu.jpeg" alt="Tiramisu">
+        <p>Tiramisu - $8</p>
+      </div>
+      <div class="menu-item">
+        <img src="images/Chocolate lava.webp" alt="Chocolate Lava Cake">
+        <p>Chocolate Lava Cake - $9</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <h2>Contact Us</h2>
+    <p>Address: 123 Foodie Lane, Flavor Town, FL 12345</p>
+    <p>Phone: (123) 456-7890</p>
+    <p>Email: info@deliciousdishes.com</p>
+    <p>© 2024 Delicious Dishes Restaurant. All rights reserved.</p>
+  </footer>
+</body>
+</html>

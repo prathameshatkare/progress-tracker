@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Questionnaire</title>
+  <style>
+    /* General Page Styling */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header, footer {
+      text-align: center;
+      padding: 20px;
+      background: #2c3e50;
+      color: white;
+    }
+
+    main {
+      max-width: 600px;
+      margin: 30px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      color: #2c3e50;
+    }
+
+    form label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #2980b9;
+      outline: none;
+      box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    input[type="submit"] {
+      background: #2980b9;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    input[type="submit"]:hover {
+      background: #1f6696;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Website Design Questionnaire</h1>
+    <p>Please fill out this questionnaire to help us better understand your project requirements.</p>
+  </header>
+
+  <main>
+    <form action="">
+      <h2>General Information</h2>
+      <label for="name">Name:</label>
+      <input type="text" name="name" id="name" placeholder="Write your name" required>
+
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" placeholder="Enter your email" required>
+
+      <label for="company">Company:</label>
+      <input type="text" name="company" id="company" placeholder="Enter company name">
+
+      <h2>Project Details</h2>
+      <label for="type">Project Type:</label>
+      <select name="project_type" id="type" required>
+        <option value="">Select Project Type</option>
+        <option value="website">Website</option>
+        <option value="webapp">Web Application</option>
+        <option value="ecommerce">E-commerce</option>
+        <option value="other">Other</option>
+      </select>
+
+      <label for="description">Project Description:</label>
+      <textarea name="description" id="description" rows="4" placeholder="Describe your project..."></textarea>
+
+      <label for="audience">Target Audience:</label>
+      <input type="text" name="audience" id="audience" placeholder="Who is your target audience?">
+
+      <h2>Design Preferences</h2>
+      <label for="color">Color Scheme:</label>
+      <input type="text" name="color" id="color" placeholder="Preferred colors">
+
+      <label for="font">Font Preferences:</label>
+      <input type="text" name="font" id="font" placeholder="Preferred fonts">
+
+      <label for="style">Style Preferences:</label>
+      <input type="text" name="style" id="style" placeholder="Minimal, Modern, Classic...">
+
+      <h2>Additional Information</h2>
+      <label for="budget">Budget:</label>
+      <input type="text" name="budget" id="budget" placeholder="Enter your budget">
+
+      <label for="timeline">Timeline:</label>
+      <input type="text" name="timeline" id="timeline" placeholder="e.g., 3 months">
+
+      <label for="notes">Additional Notes:</label>
+      <textarea name="notes" id="notes" rows="4" placeholder="Any extra details..."></textarea>
+
+      <input type="submit" value="Submit Questionnaire">
+    </form>
+  </main>
+
+  <footer>
+    <p>© 2023 Questionnaire. All rights reserved.</p>
+  </footer>
+</body>
+</html>

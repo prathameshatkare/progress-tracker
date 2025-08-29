@@ -1,0 +1,22 @@
+#box{
+    background-color: blue;
+    color: aliceblue;
+}
+
+#button{
+    background-color: green;
+    border-radius: 10px;
+}
+p{
+    text-align: center;
+}
+h1{
+    font-weight: bolder;
+    color: yellowgreen;
+
+
+}
+a{
+    text-decoration: none;
+}
+

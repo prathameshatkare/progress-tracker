@@ -14,11 +14,7 @@ A collection of algorithm problems solved with clear intuition and optimized sol
 | 4 | Best Time to Buy and Sell Stock | [LeetCode](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/) | Track minimum price seen so far, calculate max profit |
 | 5 | Valid Palindrome | [LeetCode](https://leetcode.com/problems/valid-palindrome/) | Two pointers from start and end, ignore non-alphanumeric |
 
-| 6 | Sort color | [LeetCode](https://leetcode.com/problems/sort-colors/) | If 0, swap with low and move both forward.
-
-If 1, just move mid.
-
-If 2, swap with high and move high backward.|
+| 6 | Sort color | [LeetCode](https://leetcode.com/problems/sort-colors/) | Keep three pointers (low, mid, high) and partition the array:|
 
 
 

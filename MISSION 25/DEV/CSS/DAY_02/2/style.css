@@ -1,0 +1,46 @@
+/* #header{
+    background-color: black;
+    height: 60px;
+    margin: 50;
+}
+
+#image{
+    height: 50px;
+}
+*{
+    padding: 0;
+    margin: 0;
+    color: rgb(222, 222, 228);
+    text-decoration: none;
+}
+a{
+      margin-right: 16px; 
+} */
+/* Header container */
+#header {
+    background-color: black;
+    height: 60px;
+    margin: 0; /* ❌ '50' was invalid (needs units). Use 0 or '50px' if needed */
+          /* ✅ put logo + menu side by side */
+    align-items: center;       /* ✅ vertically center them */
+    padding: 0 20px;           /* add some left/right space inside */
+}
+
+/* Logo image */
+#image {
+    height: 50px;
+    margin-right: 420px; /* ✅ space between logo and menu */
+}
+
+/* Reset and text styles */
+* {
+    padding: 0;
+    margin: 0;
+    color: rgb(222, 222, 228);
+    text-decoration: none;
+}
+
+/* Menu links */
+a {
+    margin-right: 16px; /* ✅ space between links */
+}

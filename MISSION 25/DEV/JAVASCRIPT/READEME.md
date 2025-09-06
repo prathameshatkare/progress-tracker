@@ -126,7 +126,7 @@
 
 ## Lecture 6: Conversion Operation
 
-![DOM](/images/type-conversion.png)
+![DOM](/src/images/type-conversion.png)
 
 - We dont in javascript, what type of value we get, so we need to use conversion of datatype
 - We can write typeof in 2 ways

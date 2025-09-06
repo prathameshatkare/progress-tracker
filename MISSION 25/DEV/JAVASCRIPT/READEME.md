@@ -64,7 +64,7 @@
 
 ## Lecture 4: Variables & Constants
 
-![DOM](https://github.com/prathameshatkare/progress-tracker/blob/main/MISSION%2025/DEV/JAVASCRIPT/images/variables.jpg)
+![DOM](/src/images/variables.jpg)
 
 - Only people will survive in the Tech indutry whos motive is to create something product
 - Through javascript, we can create, mobile app, web app etc

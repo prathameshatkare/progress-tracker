@@ -39,5 +39,5 @@ A collection of algorithm problems solved with **clear intuition** and **optimiz
 | 29 | Print Matrix in Spiral Order | [LeetCode](https://leetcode.com/problems/spiral-matrix/) | Use 4 pointers (top, bottom, left, right) |
 | 30 | Count Subarrays with Given Sum | [LeetCode](https://leetcode.com/problems/subarray-sum-equals-k/) | Prefix sum + hashmap to count occurrences |
 | 31 | Pascal's Triangle | [LeetCode](https://leetcode.com/problems/pascals-triangle/) | result[i]=result[i][j-1]+result[i-1][j-1] |
-| 32 | Majority Element (n/3 times) | [LeetCode](https://leetcode.com/problems/majority-element-ii/)) | Hashmap |
-| 32 | Count number of subarrays with given xor K | [GFG](https://www.geeksforgeeks.org/problems/count-subarray-with-given-xor/1)) | prefix sum+hashmap |
+| 32 | Majority Element (n/3 times) | [LeetCode](https://leetcode.com/problems/majority-element-ii/) | Hashmap |
+| 33 | Count number of subarrays with given xor K | [GFG](https://www.geeksforgeeks.org/problems/count-subarray-with-given-xor/1) | prefix sum+hashmap |

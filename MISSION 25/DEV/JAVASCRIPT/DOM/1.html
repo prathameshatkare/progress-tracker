@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pure JS TODO</title>
+  <style>
+    :root { --bg:#f4f7fb; --card:#fff; --accent:#4f46e5; --muted:#6b7280; }
+    *{box-sizing:border-box}
+    body{
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg); margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+      padding:24px;
+    }
+    .app{
+      width:100%; max-width:720px; background:var(--card); border-radius:12px; padding:20px; box-shadow:0 8px 30px rgba(15,23,42,0.06);
+    }
+    h1{margin:0 0 12px; font-size:20px}
+    form{display:flex; gap:8px; margin-bottom:14px}
+    input[type="text"]{
+      flex:1; padding:10px 12px; border-radius:8px; border:1px solid #e6e9ee; font-size:15px;
+    }
+    button{
+      padding:10px 14px; border-radius:8px; border:0; background:var(--accent); color:white; cursor:pointer; font-weight:600;
+    }
+    .controls{display:flex; gap:8px; align-items:center; margin-bottom:12px; flex-wrap:wrap}
+    .btn-ghost{background:transparent; border:1px solid #e6e9ee; color:var(--muted); padding:8px 10px; border-radius:8px; cursor:pointer}
+    ul.todo-list{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px}
+    li.item{
+      display:flex; gap:12px; align-items:center; padding:10px; border-radius:8px; border:1px solid #f0f2f5;
+    }
+    li.item.done{opacity:0.6; text-decoration:line-through}
+    .item .text{flex:1}
+    .actions{display:flex; gap:6px}
+    .small{padding:6px 8px; font-size:13px; border-radius:6px; border:0; cursor:pointer}
+    .edit{background:#fff3cd; color:#7a5a00}
+    .delete{background:#ffeef0; color:#8b1e2f}
+    .complete{background:#e6f7ff; color:#035388}
+    .count{color:var(--muted); font-size:14px}
+    .empty{color:var(--muted); padding:18px; text-align:center}
+    @media (max-width:420px){ h1{font-size:18px} }
+  </style>
+</head>
+<body>
+  <main class="app" role="application" aria-labelledby="title">
+    <h1 id="title">TODO — Pure Frontend (DOM)</h1>
+
+    <form id="todo-form" aria-label="Add todo">
+      <input id="todo-input" type="text" placeholder="Add a task (press Enter or +)" aria-label="Todo text" />
+      <button id="add-btn" type="submit">+</button>
+    </form>
+
+    <div class="controls">
+      <div class="count" id="task-count">0 tasks</div>
+      <div style="flex:1"></div>
+      <button class="btn-ghost" id="clear-completed">Clear completed</button>
+      <button class="btn-ghost" id="clear-all">Clear all</button>
+    </div>
+
+    <ul class="todo-list" id="todo-list" aria-live="polite"></ul>
+
+    <div class="empty" id="empty-msg" hidden>No tasks yet — add your first task!</div>
+  </main>
+
+  <script>
+    // Simple TODO app using only DOM manipulation + localStorage
+    (function(){
+      const STORAGE_KEY = 'pure_todo_items_v1';
+      const form = document.getElementById('todo-form');
+      const input = document.getElementById('todo-input');
+      const addBtn = document.getElementById('add-btn');
+      const listEl = document.getElementById('todo-list');
+      const countEl = document.getElementById('task-count');
+      const clearCompletedBtn = document.getElementById('clear-completed');
+      const clearAllBtn = document.getElementById('clear-all');
+      const emptyMsg = document.getElementById('empty-msg');
+
+      let items = loadItems();
+
+      render();
+
+      // Load from localStorage
+      function loadItems(){
+        try{
+          const raw = localStorage.getItem(STORAGE_KEY);
+          return raw ? JSON.parse(raw) : [];
+        }catch(e){
+          console.warn('Failed to parse storage', e);
+          return [];
+        }
+      }
+
+      function saveItems(){
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      }
+
+      function makeId(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+      function render(){
+        listEl.innerHTML = '';
+        if(items.length === 0){
+          emptyMsg.hidden = false;
+        }else{
+          emptyMsg.hidden = true;
+          items.forEach(item => listEl.appendChild(renderItem(item)));
+        }
+        updateCount();
+        saveItems();
+      }
+
+      function updateCount(){
+        const active = items.filter(i => !i.done).length;
+        const total = items.length;
+        countEl.textContent = total === 0 ? '0 tasks' : `${active} active • ${total} total`;
+      }
+
+      function renderItem(item){
+        const li = document.createElement('li');
+        li.className = 'item' + (item.done ? ' done' : '');
+        li.dataset.id = item.id;
+
+        // checkbox
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = !!item.done;
+        cb.setAttribute('aria-label', 'Mark complete');
+        cb.addEventListener('change', () => {
+          toggleDone(item.id);
+        });
+
+        // label / text (editable)
+        const txt = document.createElement('div');
+        txt.className = 'text';
+        txt.tabIndex = 0;
+        txt.textContent = item.text;
+        txt.title = 'Double-click to edit';
+        txt.addEventListener('dblclick', () => startEdit(item.id, txt));
+        txt.addEventListener('keydown', (e) => {
+          if(e.key === 'Enter') startEdit(item.id, txt);
+        });
+
+        // actions
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+
+        const completeBtn = document.createElement('button');
+        completeBtn.className = 'small complete';
+        completeBtn.textContent = item.done ? 'Undo' : 'Done';
+        completeBtn.addEventListener('click', () => toggleDone(item.id));
+
+        const editBtn = document.createElement('button');
+        editBtn.className = 'small edit';
+        editBtn.textContent = 'Edit';
+        editBtn.addEventListener('click', () => startEdit(item.id, txt));
+
+        const delBtn = document.createElement('button');
+        delBtn.className = 'small delete';
+        delBtn.textContent = 'Delete';
+        delBtn.addEventListener('click', () => deleteItem(item.id));
+
+        actions.appendChild(completeBtn);
+        actions.appendChild(editBtn);
+        actions.appendChild(delBtn);
+
+        li.appendChild(cb);
+        li.appendChild(txt);
+        li.appendChild(actions);
+
+        return li;
+      }
+
+      function addItem(text){
+        const trimmed = text.trim();
+        if(!trimmed) return;
+        items.unshift({ id: makeId(), text: trimmed, done: false, createdAt: Date.now() });
+        input.value = '';
+        render();
+      }
+
+      function deleteItem(id){
+        items = items.filter(i => i.id !== id);
+        render();
+      }
+
+      function toggleDone(id){
+        const it = items.find(i => i.id === id);
+        if(!it) return;
+        it.done = !it.done;
+        render();
+      }
+
+      function startEdit(id, textNode){
+        const it = items.find(i => i.id === id);
+        if(!it) return;
+        const inputEdit = document.createElement('input');
+        inputEdit.type = 'text';
+        inputEdit.value = it.text;
+        inputEdit.style.width = '100%';
+        inputEdit.className = 'inline-edit';
+        // replace textNode content
+        textNode.replaceWith(inputEdit);
+        inputEdit.focus();
+        inputEdit.select();
+
+        function finish(save){
+          if(save){
+            const newText = inputEdit.value.trim();
+            if(newText) it.text = newText;
+          }
+          render();
+        }
+
+        inputEdit.addEventListener('blur', () => finish(true));
+        inputEdit.addEventListener('keydown', (e) => {
+          if(e.key === 'Enter') finish(true);
+          else if(e.key === 'Escape') finish(false);
+        });
+      }
+
+      // form submit / add
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        addItem(input.value);
+      });
+
+      // keyboard shortcut: Ctrl+K to focus input
+      window.addEventListener('keydown', (e) => {
+        if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'){
+          e.preventDefault();
+          input.focus();
+          input.select();
+        }
+      });
+
+      clearCompletedBtn.addEventListener('click', () => {
+        items = items.filter(i => !i.done);
+        render();
+      });
+
+      clearAllBtn.addEventListener('click', () => {
+        if(confirm('Clear all tasks?')) {
+          items = [];
+          render();
+        }
+      });
+
+      // simple drag reorder (optional): minimal implementation
+      let dragSrcId = null;
+      listEl.addEventListener('dragstart', (e) => {
+        const li = e.target.closest('li.item');
+        if(!li) return;
+        dragSrcId = li.dataset.id;
+        e.dataTransfer.effectAllowed = 'move';
+      });
+
+      listEl.addEventListener('dragover', (e) => {
+        e.preventDefault();
+      });
+
+      listEl.addEventListener('drop', (e) => {
+        const li = e.target.closest('li.item');
+        if(!li || !dragSrcId) return;
+        const dstId = li.dataset.id;
+        if(dragSrcId === dstId) return;
+        // reorder items array: move dragSrc before dst
+        const srcIndex = items.findIndex(i=>i.id===dragSrcId);
+        const dstIndex = items.findIndex(i=>i.id===dstId);
+        if(srcIndex < 0 || dstIndex < 0) return;
+        const [moved] = items.splice(srcIndex, 1);
+        items.splice(dstIndex, 0, moved);
+        render();
+      });
+
+      // Make list items draggable by attribute when rendered
+      // small tweak: observe render and set draggable
+      const mo = new MutationObserver(() => {
+        document.querySelectorAll('li.item').forEach(li => li.setAttribute('draggable', 'true'));
+      });
+      mo.observe(listEl, { childList: true, subtree: true });
+
+    })();
+  </script>
+</body>
+</html>

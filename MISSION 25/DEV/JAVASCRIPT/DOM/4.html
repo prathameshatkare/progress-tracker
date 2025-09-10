@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chai Aur Code | DOM</title>
+</head>
+<body style="color:white; background-color:black;">
+    <ul class="language">
+        <li>Javascript</li>
+    </ul>
+</body>
+<script>
+    function addlanguage(language_name){
+        const li = document.createElement("li")
+        li.innerHTML = `${language_name}`
+        document.querySelector('.language').appendChild(li)
+    }
+    addlanguage("python")
+    addlanguage("typescript")
+
+    function Addoptimullanuguage(lan){
+        const li = document.createElement('li')
+        li.appendChild(document.createTextNode(lan))
+        document.querySelector('.language').appendChild(li)
+    }
+    Addoptimullanuguage("Golang")
+
+    // ✅ Correct nth-child syntax
+    const secondlang = document.querySelector("li:nth-child(2)")
+    
+    
+   const newli=document.createElement("li")
+   newli.textContent="mojo"
+
+   secondlang.replaceWith(newli)
+   secondlang.remove()
+
+   const child = document.querySelector("li:last-child")
+   console.log(child)
+   child.remove()
+
+    // function one(){
+    //     const li = document.createElement("li")
+    //     li.textContent = "Java"
+    //     document.querySelector('.language').appendChild(li)
+    // }
+    // one()
+
+
+   
+</script>
+</html>
